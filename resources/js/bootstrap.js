@@ -10,7 +10,8 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap');
+    require('material-dashboard/assets/js/core/bootstrap-material-design.min.js');
+    // require('bootstrap');
 } catch (e) {}
 
 /**

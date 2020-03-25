@@ -1,0 +1,97 @@
+// Fonts
+@font-face {
+    font-family: 'Futura Std';
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/FuturaStd-Book.svg?v=4.7.0") format("svg"),url("/fonts/FuturaStd-Book.woff2?v=4.7.0") format("woff2")
+}
+
+@font-face {
+    font-family: 'Futura Std Bold';
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/FuturaStd-Bold.svg?v=4.7.0") format("svg"),url("/fonts/FuturaStd-Bold.woff2?v=4.7.0") format("woff2")
+}
+
+// MASP
+$masp: #be0000;
+$masp_2: #c01829;
+$masp_3: #c02029;
+$masp_4: #c03029;
+$futura: 'Futura Std';
+$futura_bold: 'Futura Std Bold';
+
+// FontAwesome
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+$fa-font-path: "../webfonts";
+
+// Material-Bootstrap
+@import '~material-dashboard/assets/scss/material-dashboard.scss';
+
+// Bootstrap Spinners
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+@import '~bootstrap/scss/_spinners.scss';
+
+// Custom CSS
+body{
+    font-family: $futura, sans-serif;
+}
+
+.avatar{
+    width: 2.5rem;
+    border-radius: 50%;
+}
+
+.google-logo {
+    width: 2rem;
+    border-radius: 50%;
+}
+
+.masp-logo {
+    font-family: 'Futura Std Bold', sans-serif;
+    color: $masp;
+}
+
+.btn.btn-primary{
+    color: #fff;
+    background-color: $masp;
+    border-color: $masp_2;
+}
+
+.btn.btn-primary:focus,
+.btn.btn-primary.focus,
+.btn.btn-primary:hover {
+    color: #fff;
+    background-color: $masp_3;
+    border-color: $masp_4;
+}
+
+.sidebar[data-color=purple] li.active > a,
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu a:hover,
+.dropdown-menu a:focus,
+.dropdown-menu a:active {
+    background-color: $masp;
+}
+
+.card .card-header-primary .card-icon,
+.card .card-header-primary .card-text,
+.card .card-header-primary:not(.card-header-icon):not(.card-header-text),
+.card.bg-primary,
+.card.card-rotate.bg-primary .front,
+.card.card-rotate.bg-primary .back {
+    background: linear-gradient(60deg, $masp, #c01829);
+}
+
+.form-control, .is-focused .form-control {
+    background-image: linear-gradient(0deg, $masp 2px,rgba(156,39,176,0) 0),linear-gradient(0deg,#d2d2d2 1px,hsla(0,0%,82%,0) 0);
+}
+
+.form-check .form-check-input:checked + .form-check-sign .check {
+    background: $masp
+}

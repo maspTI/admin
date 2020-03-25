@@ -13,10 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Dashboard Routes
+Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware(['auth']);
 
-Auth::routes();
+// User Routes
+Route::get('/users', 'UserController@index')->name('user.index')->middleware(['auth']);
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Auth::routes();
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/login/{provider}', 'Auth\SocialLoginController@redirectToProvider')->name('socialite.provider');
+Route::get('/auth/{provider}/callback', 'Auth\SocialLoginController@handleProviderCallback')->name('socialite.callback');
