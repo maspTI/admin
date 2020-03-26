@@ -10,7 +10,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard.index')
-            ->with(['menus' => Menu::where('status', '<=', Carbon::now())->orderBy('name')->get()]);
+        return view('dashboard.index');
     }
 }

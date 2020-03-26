@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware(['auth']);
 
 // User Routes
-Route::get('/users', 'UserController@index')->name('user.index')->middleware(['auth']);
+Route::get('/users', 'UserController@index')->name('users.index')->middleware(['auth']);
 
 // Auth::routes();
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');

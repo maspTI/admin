@@ -11,7 +11,6 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('material-dashboard/assets/js/core/bootstrap-material-design.min.js');
-    // require('bootstrap');
 } catch (e) {}
 
 /**

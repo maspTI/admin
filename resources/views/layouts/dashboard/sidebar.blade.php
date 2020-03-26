@@ -10,6 +10,12 @@
                     <p>Dashboard</p>
                 </a>
             </li>
+            <li class="nav-item {{ url()->current() == route('users.index') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('users.index') }}">
+                    <i class="fas fa-users"></i>
+                    <p>Usuários</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

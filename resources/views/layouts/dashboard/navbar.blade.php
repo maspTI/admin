@@ -1,10 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
     <div class="container-fluid">
-        <div class="navbar-wrapper">
-            @foreach($menus as $menu)
-            <a class="navbar-brand" href="{{ $menu->url }}">{{ Str::upper($menu->name) }}</a>
-            @endforeach
-        </div>
+        {{-- <div class="navbar-wrapper"></div> --}}
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -22,15 +18,13 @@
                 </div>
             </form> --}}
             <ul class="navbar-nav">
-                {{-- <li class="nav-item">
-                    <a class="nav-link" href="javascript:;">
-                        <i class="material-icons">dashboard</i>
-                        <p class="d-lg-none d-md-block">
-                            Stats
-                        </p>
-                    </a>
+                @foreach($menus as $menu)
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ $menu->url }}">{{ Str::upper($menu->name) }}</a>
                 </li>
-                <li class="nav-item dropdown">
+                @endforeach
+
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">notifications</i>
                         <span class="notification">5</span>

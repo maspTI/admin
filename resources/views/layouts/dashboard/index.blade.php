@@ -9,11 +9,6 @@
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Material+Icons" />
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet" />
-    <script>
-        var auth = {
-            role: {{ auth()->user()->role }}
-        }
-    </script>
 </head>
 <body>
     <div class="wrapper" id="app">
