@@ -4,12 +4,13 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -27,24 +28,33 @@ class User extends Authenticatable
 
     public function search(array $request)
     {
-        return $this->where(function ($query) use ($request){
-                $query->where('name', 'LIKE', $request['search'] != null ? "%{$request['search']}%" : '%%')
-                ->orWhere('email',  'LIKE', $request['search'] != null ? "%{$request['search']}%" : '%%')
-                ->orWhere('username',  'LIKE', $request['search'] != null ? "%{$request['search']}%" : '%%');
+        return $this->where('id', '<>', auth()->user()->id)
+            ->where(function ($query) use ($request) {
+                $query->where('name', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%')
+                    ->orWhere('email', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%')
+                    ->orWhere('username', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%');
             })
-            ->orWhere(function($query) use ($request) {
-                if($request['status'] == 1){
+            ->where(function ($query) use ($request) {
+                if ($request['status'] == 1) {
                     return $query->where('status', '<=', Carbon::now());
-                } elseif($request['status'] == 2) {
-                    return $query->whereIsNull('status');
+                } elseif ($request['status'] == 2) {
+                    return $query->where('status', null);
                 }
                 return;
             })
-            ->orWhereHas('department', function($query) use ($request){
-                $query->where('name', $request['search'] != null ? "%{$request['search']}%" : '%%');
+            ->where(function ($query) use ($request) {
+                if ($request['department'] != null) {
+                    return $query->whereHas('department', function ($query) use ($request) {
+                        if ($request['department'] != 'all') {
+                            return $query->where('name', 'LIKE', $request['department']);
+                        }
+                        return $query->where('name', 'LIKE', '%%');
+                    });
+                }
+                return $query->whereDoesntHave('department');
             })
-            ->where('id', '<>', auth()->user()->id)
             ->orderBy('name')
-            ->paginate($request['paginate'] == 'all' ? $this->count('id') : $request['paginate']);;
+            ->with(['department'])
+            ->paginate($request['paginate'] == 'all' ? $this->count('id') : $request['paginate']);
     }
 }

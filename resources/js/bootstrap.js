@@ -11,7 +11,16 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('material-dashboard/assets/js/core/bootstrap-material-design.min.js');
+    // require('bootstrap');
 } catch (e) {}
+
+/**
+ * Material Dashboard
+ */
+require('material-dashboard/assets/js/plugins/bootstrap-notify.js');
+window.Chartist = require('material-dashboard/assets/js/plugins/chartist.min.js');
+window.PerfectScrollbar = require('material-dashboard/assets/js/plugins/perfect-scrollbar.jquery.min.js');
+require('material-dashboard/assets/js/material-dashboard.js');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

@@ -2,7 +2,7 @@
     <tr>
         <td v-text="user.name"></td>
         <td
-            v-text="user.department != null ? user.email : 'Não informado'"
+            v-text="user.department != null ? user.department.name.toUpperCase() : 'Não informado'"
         ></td>
         <td v-text="user.status ? 'Ativo' : 'Inativo'"></td>
         <td>

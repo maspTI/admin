@@ -33,16 +33,18 @@
 <script>
 import TableRow from "./Row";
 import FilterComponent from "./Filter";
-import Paginator from '../Utilities/Paginator'
+import Paginator from "../Utilities/Paginator";
 export default {
     data() {
         return {
             users: [],
             paginate: {},
             filters: {
-                search: '',
-                paginate: 10
-            },
+                department: "all",
+                paginate: 10,
+                search: "",
+                status: "all"
+            }
         };
     },
     components: {
@@ -55,7 +57,7 @@ export default {
             axios
                 .get(
                     url === null
-                        ? `/users?paginate=${this.filters.paginate}&search=${this.filters.search}&status=${this.filters.status}`
+                        ? `/users?paginate=${this.filters.paginate}&search=${this.filters.search}&status=${this.filters.status}&department=${this.filters.department}`
                         : url
                 )
                 .then(result => {
@@ -63,7 +65,13 @@ export default {
                     delete result.data.data;
                     this.paginate = result.data;
                 })
-                .catch(errors => console.log(errors));
+                .catch(errors => {
+                    window.flash(
+                        "Algo deu errado. Tente recarregar a página.",
+                        "danger"
+                    );
+                    console.error(errors.response.data.message);
+                });
         }
     },
     created() {
@@ -73,9 +81,11 @@ export default {
             this.fetch();
         });
 
-        window.events.$on('page', url => {
-            this.fetch(`${url}&paginate=${this.filters.paginate}&search=${this.filters.search}&status=${this.filters.status}`);
-        })
+        window.events.$on("page", url => {
+            this.fetch(
+                `${url}&paginate=${this.filters.paginate}&search=${this.filters.search}&status=${this.filters.status}&department=${this.filters.department}`
+            );
+        });
     }
 };
 </script>

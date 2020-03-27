@@ -17,11 +17,12 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('department_id')->nullable();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('avatar')->nullable();
             $table->string('username')->nullable();
             $table->timestamp('status')->nullable();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('department_id')->references('id')->on('departments');

@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,11 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->wantsJson()) {
+            $departments = new Department;
+            return $departments->search(request()->all());
+        }
+        return view('departments.index');
     }
 
     /**

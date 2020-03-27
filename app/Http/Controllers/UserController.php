@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        if(request()->wantsJson()){
+        if (request()->wantsJson()) {
             $users = new User;
             return $users->search(request()->all());
         }

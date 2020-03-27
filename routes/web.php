@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 // Dashboard Routes
 Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware(['auth']);
 
+// Departments Routes
+Route::resource('departments', 'DepartmentController');
+
 // User Routes
 Route::get('/users', 'UserController@index')->name('users.index')->middleware(['auth']);
 

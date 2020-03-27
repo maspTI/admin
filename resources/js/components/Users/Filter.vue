@@ -1,6 +1,6 @@
 <template>
     <div class="row d-flex align-items-end">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group bmd-form-group">
                 <label for="search" class="bmd-label-floating">Busca</label>
                 <input
@@ -14,7 +14,7 @@
                 />
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group bmd-form-group">
                 <label for="paginate">Itens por página</label>
                 <select
@@ -30,9 +30,9 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group bmd-form-group">
-                <label for="paginate">Status</label>
+                <label for="status">Status</label>
                 <select
                     name="status"
                     id="status"
@@ -46,6 +46,27 @@
                 </select>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-group bmd-form-group">
+                <label for="department">Departamento</label>
+                <select
+                    name="department"
+                    id="department"
+                    class="form-control"
+                    v-model="filters.department"
+                    @change="search"
+                >
+                    <option value="all">TODOS</option>
+                    <option value="">SEM DEPARTAMENTO</option>
+                    <option
+                        v-for="department in departments"
+                        :value="department.name"
+                        :key="department.id"
+                        v-text="department.name.toUpperCase()"
+                    ></option>
+                </select>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -53,16 +74,36 @@ export default {
     data() {
         return {
             filters: {
-                search: "",
+                department: "all",
                 paginate: 10,
-                status: 'all'
-            }
+                search: "",
+                status: "all"
+            },
+            departments: []
         };
     },
     methods: {
         search: _.debounce(function() {
             window.events.$emit("search", this.filters);
-        }, 350)
+        }, 350),
+        fetch() {
+            this.departments = [];
+            axios
+                .get("/departments")
+                .then(result => {
+                    this.departments = result.data;
+                })
+                .catch(errors => {
+                    window.flash(
+                        "Algo deu errado. Tente recarregar a página.",
+                        "danger"
+                    );
+                    console.error(errors.response.data.message);
+                });
+        }
+    },
+    created() {
+        this.fetch();
     }
 };
 </script>
