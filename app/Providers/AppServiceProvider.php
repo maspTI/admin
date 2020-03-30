@@ -26,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('menus', Menu::where('status', '<=', Carbon::now())->orderBy('name')->get());
+        View::share([
+            'menus' => Menu::where('status', '<=', Carbon::now())->orderBy('name')->get()
+        ]);
     }
 }

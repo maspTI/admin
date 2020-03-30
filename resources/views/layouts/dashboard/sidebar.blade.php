@@ -16,6 +16,12 @@
                     <p>Usuários</p>
                 </a>
             </li>
+            <li class="nav-item {{ url()->current() == route('users.create') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('users.create') }}">
+                    <i class="fas fa-user"></i>
+                    <p>Criar Usuário</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

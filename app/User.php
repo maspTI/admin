@@ -26,6 +26,11 @@ class User extends Authenticatable
         return $this->belongsTo(Department::class);
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
     public function search(array $request)
     {
         return $this->where('id', '<>', auth()->user()->id)

@@ -40,7 +40,6 @@ class SocialLoginController extends Controller
     {
         $localUser->update(['avatar' => $googleUser->getAvatar()]);
         auth()->login($localUser, true);
-
         return redirect('/');
     }
 

@@ -4,9 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 
 window.events = new Vue();
 
@@ -26,11 +26,25 @@ window.flash = function(message, level = "success") {
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Users
-Vue.component("index-users-component", require("./components/Users/Index.vue").default);
+Vue.component(
+    "index-users-component",
+    require("./components/Users/Index.vue").default
+);
+Vue.component(
+    "create-update-users-component",
+    require("./components/Users/CreateUpdate.vue").default
+);
+Vue.component(
+    "update-users-department-component",
+    require("./components/Users/EditDepartment.vue").default
+);
 
 // Utilities
 Vue.component("flash", require("./components/Utilities/Flash.vue").default);
-Vue.component("submit-button", require("./components/Utilities/SubmitButton.vue").default);
+Vue.component(
+    "submit-button",
+    require("./components/Utilities/SubmitButton.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -39,5 +53,5 @@ Vue.component("submit-button", require("./components/Utilities/SubmitButton.vue"
  */
 
 const app = new Vue({
-    el: '#app',
+    el: "#app"
 });

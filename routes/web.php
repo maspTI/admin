@@ -14,13 +14,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Dashboard Routes
-Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware(['auth']);
+Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware(['auth', 'user.status', 'has.department']);
 
 // Departments Routes
-Route::resource('departments', 'DepartmentController');
+Route::resource('departments', 'DepartmentController')->middleware(['auth', 'user.status']);
+
+// Roles Routes
+Route::resource('roles', 'RoleController')->middleware(['auth', 'user.status']);
 
 // User Routes
-Route::get('/users', 'UserController@index')->name('users.index')->middleware(['auth']);
+Route::get('/users', 'UserController@index')->name('users.index')->middleware(['auth', 'user.status', 'has.department']);
+Route::post('/users', 'UserController@store')->name('users.store')->middleware(['auth', 'user.status', 'has.department']);
+Route::get('/users/create', 'UserController@create')->name('users.create')->middleware(['auth', 'user.status', 'has.department']);
+Route::match(['PUT', 'PATCH'], '/users/{user}', 'UserController@update')->name('users.update')->middleware(['auth', 'user.status']);
+Route::get('/users/departments', 'UserController@editDepartment')->name('users.edit.department')->middleware(['auth', 'user.status']);
 
 // Auth::routes();
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
