@@ -14,6 +14,13 @@ class Department extends Model
         return $this->hasMany(User::class);
     }
 
+    public function changeStatus()
+    {
+        return $this->update([
+            'status' => $this->status == null ? Carbon::now() : null
+        ]);
+    }
+
     public function search(array $request)
     {
         if (count($request)) {

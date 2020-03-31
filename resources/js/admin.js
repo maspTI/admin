@@ -35,6 +35,16 @@ Vue.component(
     require("./components/Departments/CreateUpdate.vue").default
 );
 
+// Roles
+Vue.component(
+    "index-roles-component",
+    require("./components/Roles/Index.vue").default
+);
+Vue.component(
+    "create-update-role-component",
+    require("./components/Roles/CreateUpdate.vue").default
+);
+
 // Users
 Vue.component(
     "index-users-component",

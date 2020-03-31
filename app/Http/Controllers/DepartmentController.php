@@ -85,6 +85,11 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
+        if (request()->has('change_status')) {
+            $department->changeStatus();
+            return $department->fresh();
+        }
+
         $this->validateRequest($request);
 
         $department->update([

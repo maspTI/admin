@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware(['auth', 'user.status', 'has.department']);
 
 // Departments Routes
-Route::resource('departments', 'DepartmentController')->middleware(['auth', 'user.status']);
+Route::resource('departments', 'DepartmentController')->middleware(['auth', 'user.status', 'has.department']);
 
 // Roles Routes
-Route::resource('roles', 'RoleController')->middleware(['auth', 'user.status']);
+Route::resource('roles', 'RoleController')->middleware(['auth', 'user.status', 'has.department']);
 
 // User Routes
 Route::get('/users', 'UserController@index')->name('users.index')->middleware(['auth', 'user.status', 'has.department']);

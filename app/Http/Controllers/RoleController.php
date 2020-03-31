@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Role;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -28,7 +29,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('roles.create');
     }
 
     /**
@@ -39,7 +40,12 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validateRequest($request);
+
+        Role::create([
+            'name' => strtolower(request('name')),
+            'status' => Carbon::now()
+        ]);
     }
 
     /**
@@ -61,7 +67,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        return view('roles.edit')->with(['role' => $role]);
     }
 
     /**
@@ -73,7 +79,16 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        if (request()->has('change_status')) {
+            $role->changeStatus();
+            return $role->fresh();
+        }
+
+        $this->validateRequest($request);
+
+        $role->update([
+            'name' => request('name')
+        ]);
     }
 
     /**
@@ -85,5 +100,12 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         //
+    }
+
+    public function validateRequest(Request $request, Role $role = null)
+    {
+        request()->validate([
+            'name' => 'required',
+        ]);
     }
 }

@@ -34,6 +34,18 @@
                     <p>Criar Departamento</p>
                 </a>
             </li>
+            <li class="nav-item {{ url()->current() == route('roles.index') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('roles.index') }}">
+                    <i class="fas fa-id-card-alt"></i>
+                    <p>Funcoes</p>
+                </a>
+            </li>
+            <li class="nav-item {{ url()->current() == route('roles.create') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('roles.create') }}">
+                    <i class="fas fa-id-card-alt"></i>
+                    <p>Criar Funcao</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

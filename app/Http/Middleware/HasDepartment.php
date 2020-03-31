@@ -16,7 +16,10 @@ class HasDepartment
     public function handle($request, Closure $next)
     {
         if (auth()->user()->department_id != null) {
-            return $next($request);
+            if (auth()->user()->department->status != null) {
+                return $next($request);
+            }
+            return abort(403, 'Departamento Bloqueado');
         }
         return redirect()->route('users.edit.department');
     }
