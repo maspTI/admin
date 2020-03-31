@@ -1,26 +1,24 @@
 <template>
     <tr>
-        <td v-text="user.name"></td>
+        <td v-text="department.name.toUpperCase()"></td>
         <td
             v-text="
-                user.department != null
-                    ? user.department.name.toUpperCase()
-                    : 'Não informado'
+                department.email != null ? department.email : 'Não informado'
             "
         ></td>
-        <td v-text="user.status ? 'Ativo' : 'Inativo'"></td>
+        <td v-text="department.status ? 'Ativo' : 'Inativo'"></td>
         <td>
             <div class="col-md-12 d-flex justify-content-around flex-wrap">
                 <button
                     class="btn"
                     :class="{
-                        'btn-dark': user.status,
-                        'btn-success': !user.status
+                        'btn-dark': department.status,
+                        'btn-success': !department.status
                     }"
                     @click.prevent="send"
                 >
-                    <i class="fas fa-user-shield" v-if="!user.status"></i>
-                    <i class="fas fa-user" v-else></i>
+                    <i class="far fa-eye" v-if="!department.status"></i>
+                    <i class="far fa-eye-slash" v-else></i>
                 </button>
             </div>
         </td>
@@ -28,22 +26,22 @@
 </template>
 <script>
 export default {
-    props: ["user"],
+    props: ["department"],
     data() {
         return {};
     },
     methods: {
         view() {
-            window.events.$emit("quick_view", this.user);
+            window.events.$emit("quick_view", this.department);
         },
         send: _.throttle(
             function() {
                 axios
-                    .patch(`/users/${this.user.id}`, {
-                        change_status: this.user.status ? false : true
+                    .patch(`/departments/${this.department.id}`, {
+                        change_status: this.department.status ? false : true
                     })
                     .then(result => {
-                        this.user.status = result.data.status;
+                        this.department.status = result.data.status;
                         window.flash("Função alterada com sucesso!");
                     })
                     .catch(errors =>

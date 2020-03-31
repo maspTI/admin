@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
+    protected $fillable = ['name', 'email', 'status'];
+
     public function users()
     {
         return $this->hasMany(User::class);
@@ -15,7 +17,17 @@ class Department extends Model
     public function search(array $request)
     {
         if (count($request)) {
-            return;
+            return $this->where('name', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%')
+                ->where(function ($query) use ($request) {
+                    if ($request['status'] == 1) {
+                        return $query->where('status', '<=', Carbon::now());
+                    } elseif ($request['status'] == 2) {
+                        return $query->where('status', null);
+                    }
+                    return;
+                })
+                ->orderBy('name')
+                ->paginate($request['paginate'] == 'all' ? $this->count('id') : $request['paginate']);
         }
         return $this->where('status', '<=', Carbon::now())
             ->orderBy('name')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Department;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        return view('departments.create');
     }
 
     /**
@@ -44,7 +45,16 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        request()->validate([
+            'name' => 'required',
+            'email' => 'email|nullable',
+        ]);
+
+        Department::create([
+            'name' => strtolower(request('name')),
+            'email' => strtolower(request('email')),
+            'status' => Carbon::now()
+        ]);
     }
 
     /**

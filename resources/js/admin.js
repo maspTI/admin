@@ -25,6 +25,16 @@ window.flash = function(message, level = "success") {
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+// Departments
+Vue.component(
+    "index-departments-component",
+    require("./components/Departments/Index.vue").default
+);
+Vue.component(
+    "create-update-department-component",
+    require("./components/Departments/CreateUpdate.vue").default
+);
+
 // Users
 Vue.component(
     "index-users-component",

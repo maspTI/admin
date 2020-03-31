@@ -22,6 +22,18 @@
                     <p>Criar Usuário</p>
                 </a>
             </li>
+            <li class="nav-item {{ url()->current() == route('departments.index') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('departments.index') }}">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <p>Departamentos</p>
+                </a>
+            </li>
+            <li class="nav-item {{ url()->current() == route('departments.create') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('departments.create') }}">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <p>Criar Departamento</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>
