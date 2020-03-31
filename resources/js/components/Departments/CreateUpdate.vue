@@ -6,7 +6,7 @@
         enctype="multipart/form-data"
     >
         <div class="row d-flex align-items-end justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-8" v-if="department == undefined">
                 <div class="form-check">
                     <label class="form-check-label">
                         <input
@@ -67,6 +67,7 @@
 import Form from "../../form-validation/Form";
 import SubmitButton from "../Utilities/SubmitButton";
 export default {
+    props: ["department", "http_verb", "url", "message"],
     data() {
         return {
             form: new Form({
@@ -82,13 +83,12 @@ export default {
     methods: {
         send() {
             window.events.$emit("loading", true);
-            this.form
-                .post("/departments")
+            this.form[this.http_verb](this.url)
                 .then(result => {
                     window.events.$emit("loading", false);
-                    window.flash("Departmento criado com sucesso!");
+                    window.flash(this.message);
                     document.querySelector("#name").focus();
-                    if (!this.many) {
+                    if (!this.many || this.department != undefined) {
                         window.location = "/departments";
                     }
                 })
@@ -97,6 +97,11 @@ export default {
                     window.flash("Algo deu errado.", "danger");
                     console.error(errors);
                 });
+        }
+    },
+    created() {
+        if (this.department != undefined) {
+            this.form = new Form({ ...this.department });
         }
     }
 };

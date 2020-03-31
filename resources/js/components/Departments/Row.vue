@@ -20,6 +20,11 @@
                     <i class="far fa-eye" v-if="!department.status"></i>
                     <i class="far fa-eye-slash" v-else></i>
                 </button>
+                <a
+                    :href="`/departments/${department.id}/edit`"
+                    class="btn btn-warning"
+                    ><i class="far fa-edit"></i
+                ></a>
             </div>
         </td>
     </tr>

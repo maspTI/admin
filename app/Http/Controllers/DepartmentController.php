@@ -45,10 +45,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'name' => 'required',
-            'email' => 'email|nullable',
-        ]);
+        $this->validateRequest($request);
 
         Department::create([
             'name' => strtolower(request('name')),
@@ -76,7 +73,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        //
+        return view('departments.edit')->with(['department' => $department]);
     }
 
     /**
@@ -88,7 +85,12 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+        $this->validateRequest($request);
+
+        $department->update([
+            'name' => request('name'),
+            'email' => request('email')
+        ]);
     }
 
     /**
@@ -100,5 +102,13 @@ class DepartmentController extends Controller
     public function destroy(Department $department)
     {
         //
+    }
+
+    public function validateRequest(Request $request)
+    {
+        request()->validate([
+            'name' => 'required',
+            'email' => 'email|nullable',
+        ]);
     }
 }
