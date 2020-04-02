@@ -124,30 +124,30 @@ export default {
                 name: "",
                 email: "",
                 department: "",
-                roles: []
+                roles: [],
             }),
             departments: [],
             roles: [],
-            many: false
+            many: false,
         };
     },
     components: {
         Multiselect,
-        SubmitButton
+        SubmitButton,
     },
     methods: {
         send() {
             window.events.$emit("loading", true);
             this.form[this.http_verb](this.url)
-                .then(result => {
+                .then((result) => {
                     window.events.$emit("loading", false);
                     window.flash(this.message);
                     document.querySelector("#name").focus();
-                    if (!this.many && this.user == undefined) {
+                    if (!this.many || this.user != undefined) {
                         window.location = "/users";
                     }
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     window.events.$emit("loading", false);
                     window.flash("Algo deu errado.", "danger");
                     console.error(errors);
@@ -157,10 +157,10 @@ export default {
             this[data] = [];
             axios
                 .get(`/${data}`)
-                .then(result => {
+                .then((result) => {
                     this[data] = result.data;
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     window.flash(
                         "Algo deu errado. Tente recarregar a página.",
                         "danger"
@@ -170,7 +170,7 @@ export default {
         },
         customLabel(data) {
             return `${data.name.toUpperCase()}`;
-        }
+        },
     },
     created() {
         this.fetch("departments");
@@ -178,7 +178,7 @@ export default {
         if (this.user != undefined) {
             this.form = new Form({ ...this.user });
         }
-    }
+    },
 };
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

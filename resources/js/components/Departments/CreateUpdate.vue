@@ -72,37 +72,37 @@ export default {
         return {
             form: new Form({
                 name: "",
-                email: ""
+                email: "",
             }),
-            many: false
+            many: false,
         };
     },
     components: {
-        SubmitButton
+        SubmitButton,
     },
     methods: {
         send() {
             window.events.$emit("loading", true);
             this.form[this.http_verb](this.url)
-                .then(result => {
+                .then((result) => {
                     window.events.$emit("loading", false);
                     window.flash(this.message);
                     document.querySelector("#name").focus();
-                    if (!this.many && this.department == undefined) {
+                    if (!this.many || this.department != undefined) {
                         window.location = "/departments";
                     }
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     window.events.$emit("loading", false);
                     window.flash("Algo deu errado.", "danger");
                     console.error(errors);
                 });
-        }
+        },
     },
     created() {
         if (this.department != undefined) {
             this.form = new Form({ ...this.department });
         }
-    }
+    },
 };
 </script>

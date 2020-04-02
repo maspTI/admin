@@ -53,37 +53,37 @@ export default {
     data() {
         return {
             form: new Form({
-                name: ""
+                name: "",
             }),
-            many: false
+            many: false,
         };
     },
     components: {
-        SubmitButton
+        SubmitButton,
     },
     methods: {
         send() {
             window.events.$emit("loading", true);
             this.form[this.http_verb](this.url)
-                .then(result => {
+                .then((result) => {
                     window.events.$emit("loading", false);
                     window.flash(this.message);
                     document.querySelector("#name").focus();
-                    if (!this.many && this.role == undefined) {
+                    if (!this.many || this.role == undefined) {
                         window.location = "/roles";
                     }
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     window.events.$emit("loading", false);
                     window.flash("Algo deu errado.", "danger");
                     console.error(errors);
                 });
-        }
+        },
     },
     created() {
         if (this.role != undefined) {
             this.form = new Form({ ...this.role });
         }
-    }
+    },
 };
 </script>
