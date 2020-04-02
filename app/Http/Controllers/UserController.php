@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Mail\VerifyUserDepartment;
 use Illuminate\Support\Facades\Log;
@@ -27,12 +28,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        request()->validate([
-            'name' => 'required',
-            'email' => 'email|nullable',
-            'departament' => 'nullable',
-            'roles' => 'nullable'
-        ]);
+        $this->validateRequest($request);
 
         $user = User::create([
             'name' => request('name'),
@@ -41,6 +37,8 @@ class UserController extends Controller
             'department_id' => request('department')['id'],
             'status' => Carbon::now()
         ]);
+
+        $user->roles()->attach(Arr::pluck(request('roles'), 'id'));
     }
 
     public function editDepartment()
@@ -50,6 +48,11 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        if (request()->has('change_status')) {
+            $user->changeStatus();
+            return $user->fresh();
+        }
+
         if (request()->has('set_department')) {
             request()->validate([
                 'department' => 'required'
@@ -58,18 +61,41 @@ class UserController extends Controller
             $user->update([
                 'department_id' => request('department')
             ]);
+            return $user->fresh();
         }
+
+        $this->validateRequest($request);
+
+        $user->update([
+            'name' => request('name'),
+            'email' => request('email'),
+            'username' => request('email') != null ? explode('@', request('email'))[0] : null,
+            'department_id' => request('department')['id'],
+        ]);
+
+        $user->roles()->detach($user->roles->pluck('id')->all());
+        $user->roles()->attach(Arr::pluck(request('roles'), 'id'));
     }
 
     public function edit(User $user)
     {
-        return view('users.show')->with([
-            'user' => User::whereId($user->id)->with(['department'])->first()
+        return view('users.edit')->with([
+            'user' => User::whereId($user->id)->with(['department', 'roles'])->first()
         ]);
     }
 
     public function destroy(User $user)
     {
         $user->delete();
+    }
+
+    public function validateRequest(Request $request, User $user = null)
+    {
+        request()->validate([
+            'name' => 'required',
+            'email' => 'email|nullable',
+            'departament' => 'nullable',
+            'roles' => 'nullable'
+        ]);
     }
 }

@@ -31,14 +31,20 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function changeStatus()
+    {
+        return $this->update([
+            'status' => $this->status == null ? Carbon::now() : null
+        ]);
+    }
+
     public function search(array $request)
     {
-        return $this->where('id', '<>', auth()->user()->id)
-            ->where(function ($query) use ($request) {
-                $query->where('name', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%')
+        return $this->where(function ($query) use ($request) {
+            $query->where('name', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%')
                     ->orWhere('email', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%')
                     ->orWhere('username', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%');
-            })
+        })
             ->where(function ($query) use ($request) {
                 if ($request['status'] == 1) {
                     return $query->where('status', '<=', Carbon::now());

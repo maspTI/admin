@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Arr;
 
 class HasDepartment
 {
@@ -15,7 +16,7 @@ class HasDepartment
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->department_id != null) {
+        if (auth()->user()->department_id == 8) {
             if (auth()->user()->department->status != null) {
                 return $next($request);
             }

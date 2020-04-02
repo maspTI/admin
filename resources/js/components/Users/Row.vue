@@ -15,12 +15,18 @@
                     class="btn"
                     :class="{
                         'btn-dark': user.status,
-                        'btn-success': !user.status
+                        'btn-success': !user.status,
                     }"
                     @click.prevent="send"
                 >
-                    <i class="fas fa-user-shield" v-if="!user.status"></i>
-                    <i class="fas fa-user" v-else></i>
+                    <i class="far fa-eye" v-if="!user.status"></i>
+                    <i class="far fa-eye-slash" v-else></i>
+                </button>
+                <a :href="`/users/${user.id}/edit`" class="btn btn-warning"
+                    ><i class="far fa-edit"></i
+                ></a>
+                <button class="btn btn-danger" @click.prevent="destroy">
+                    <i class="far fa-trash-alt"></i>
                 </button>
             </div>
         </td>
@@ -40,13 +46,13 @@ export default {
             function() {
                 axios
                     .patch(`/users/${this.user.id}`, {
-                        change_status: this.user.status ? false : true
+                        change_status: true,
                     })
-                    .then(result => {
+                    .then((result) => {
                         this.user.status = result.data.status;
-                        window.flash("Função alterada com sucesso!");
+                        window.flash("Usuario alterado com sucesso!");
                     })
-                    .catch(errors =>
+                    .catch((errors) =>
                         window.flash(
                             "Aldo deu errado. Contate o setor de TI",
                             "danger"
@@ -55,7 +61,34 @@ export default {
             },
             500,
             { trailing: false }
-        )
-    }
+        ),
+        destroy() {
+            window.swal
+                .fire({
+                    title: "Voce tem certeza?",
+                    text: `Voce ira excluir o usuario ${this.user.name}`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancelar",
+                })
+                .then((result) => {
+                    if (result.value) {
+                        axios
+                            .delete(`users/${this.user.id}`)
+                            .then((result) => {
+                                window.flash("Usuario excluido com sucesso!");
+                                window.events.$emit("remove_user", this.user);
+                            })
+                            .catch((errors) => {
+                                window.flash("Algo deu errado.", "danger");
+                                console.error(errors);
+                            });
+                    }
+                });
+        },
+    },
 };
 </script>

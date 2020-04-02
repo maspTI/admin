@@ -43,14 +43,14 @@ export default {
                 department: "all",
                 paginate: 10,
                 search: "",
-                status: "all"
-            }
+                status: "all",
+            },
         };
     },
     components: {
         TableRow,
         FilterComponent,
-        Paginator
+        Paginator,
     },
     methods: {
         fetch(url = null) {
@@ -60,32 +60,38 @@ export default {
                         ? `/users?paginate=${this.filters.paginate}&search=${this.filters.search}&status=${this.filters.status}&department=${this.filters.department}`
                         : url
                 )
-                .then(result => {
+                .then((result) => {
                     this.users = result.data.data;
                     delete result.data.data;
                     this.paginate = result.data;
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     window.flash(
                         "Algo deu errado. Tente recarregar a página.",
                         "danger"
                     );
                     console.error(errors.response.data.message);
                 });
-        }
+        },
     },
     created() {
         this.fetch();
-        window.events.$on("search", filter => {
+        window.events.$on("search", (filter) => {
             this.filters = filter;
             this.fetch();
         });
 
-        window.events.$on("page", url => {
+        window.events.$on("page", (url) => {
             this.fetch(
                 `${url}&paginate=${this.filters.paginate}&search=${this.filters.search}&status=${this.filters.status}&department=${this.filters.department}`
             );
         });
-    }
+
+        window.events.$on("remove_user", (removed_user) => {
+            this.users.forEach((user, index) => {
+                if (user.id === removed_user.id) this.users.splice(index, 1);
+            });
+        });
+    },
 };
 </script>

@@ -11,9 +11,10 @@
         <div class="row">
             <div class="col-md-12">
                 <create-update-users-component
-                    url="/users"
-                    http_verb="post"
-                    message="Usuario criado com sucesso!"
+                    :user="{{ $user }}"
+                    url="/users/{{ $user->id }}"
+                    http_verb="put"
+                    message="Usuario atualizado com sucesso!"
                 />
             </div>
         </div>

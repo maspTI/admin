@@ -6,6 +6,23 @@
         enctype="multipart/form-data"
     >
         <div class="row d-flex align-items-end">
+            <div class="col-md-8" v-if="user == undefined">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input
+                            class="form-check-input"
+                            name="many"
+                            id="many"
+                            type="checkbox"
+                            v-model="many"
+                        />
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                        <label for="many">Vários</label>
+                    </label>
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="form-group bmd-form-group">
                     <label for="name" class="bmd-label-floating">Nome</label>
@@ -100,17 +117,18 @@ import Form from "../../form-validation/Form";
 import Multiselect from "vue-multiselect";
 import SubmitButton from "../Utilities/SubmitButton";
 export default {
+    props: ["user", "http_verb", "url", "message"],
     data() {
         return {
             form: new Form({
                 name: "",
                 email: "",
-                username: "",
                 department: "",
                 roles: []
             }),
             departments: [],
-            roles: []
+            roles: [],
+            many: false
         };
     },
     components: {
@@ -120,12 +138,14 @@ export default {
     methods: {
         send() {
             window.events.$emit("loading", true);
-            this.form
-                .post("/users")
+            this.form[this.http_verb](this.url)
                 .then(result => {
-                    window.flash("Usuario criado com sucesso!");
-                    // window.location = "/users";
                     window.events.$emit("loading", false);
+                    window.flash(this.message);
+                    document.querySelector("#name").focus();
+                    if (!this.many && this.user == undefined) {
+                        window.location = "/users";
+                    }
                 })
                 .catch(errors => {
                     window.events.$emit("loading", false);
@@ -155,6 +175,9 @@ export default {
     created() {
         this.fetch("departments");
         this.fetch("roles");
+        if (this.user != undefined) {
+            this.form = new Form({ ...this.user });
+        }
     }
 };
 </script>
