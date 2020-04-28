@@ -24,14 +24,26 @@
             </li>
             <li class="nav-item {{ url()->current() == route('departments.index') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('departments.index') }}">
-                    <i class="fas fa-puzzle-piece"></i>
+                    <i class="fas fa-city"></i>
                     <p>Departamentos</p>
                 </a>
             </li>
             <li class="nav-item {{ url()->current() == route('departments.create') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('departments.create') }}">
-                    <i class="fas fa-puzzle-piece"></i>
+                    <i class="fas fa-city"></i>
                     <p>Criar Departamento</p>
+                </a>
+            </li>
+            <li class="nav-item {{ url()->current() == route('subdepartments.index') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('subdepartments.index') }}">
+                    <i class="far fa-building"></i>
+                    <p>Subdepartamentos</p>
+                </a>
+            </li>
+            <li class="nav-item {{ url()->current() == route('subdepartments.create') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('subdepartments.create') }}">
+                    <i class="far fa-building"></i>
+                    <p>Criar Subdepartamento</p>
                 </a>
             </li>
             <li class="nav-item {{ url()->current() == route('roles.index') ? 'active' : '' }}">

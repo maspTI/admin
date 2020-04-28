@@ -18,12 +18,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'department_id','name','email','avatar','username','status',
+        'department_id', 'subdepartment_id','name','email','avatar','username','status',
     ];
 
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+
+    public function subdepartment()
+    {
+        return $this->belongsTo(Subdepartment::class);
     }
 
     public function roles()

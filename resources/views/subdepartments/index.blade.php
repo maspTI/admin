@@ -5,7 +5,7 @@
 @section('content')
 <div class="card">
     <div class="card-header card-header-primary">
-        <h4 class="card-title ">Departamentos</h4>
+        <h4 class="card-title ">Subdepartamentos</h4>
     </div>
     <div class="card-body">
         <div class="row">

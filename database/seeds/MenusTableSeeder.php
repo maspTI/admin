@@ -38,6 +38,14 @@ class MenusTableSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
 
+            [
+                'name' => strtolower('inventário'),
+                'url' => 'http://inventario.masp.net.br',
+                'status' => Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+
         ]);
     }
 }

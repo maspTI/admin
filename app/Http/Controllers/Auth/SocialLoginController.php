@@ -29,11 +29,11 @@ class SocialLoginController extends Controller
 
         $localUser = User::where('email', $googleUser->getEmail())->first();
 
-        if (explode("@", $googleUser->getEmail())[1] === env('EMAIL_DOMAIN') && !isset($localUser->id)) {
+        if (explode("@", $googleUser->getEmail())[1] === 'masp.org.br' && !isset($localUser->id)) {
             $localUser = $this->create($googleUser);
         }
 
-        return isset($localUser->id) ? $this->login($localUser, $googleUser) : abort(403);
+        return isset($localUser->id) ? $this->login($localUser, $googleUser) : abort(403, 'Acesso não permitido.');
     }
 
     public function login($localUser, $googleUser)

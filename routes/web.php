@@ -32,6 +32,14 @@ Route::match(['PUT', 'PATCH'], 'roles/{role}', 'RoleController@update')->name('r
 Route::delete('roles/{role}', 'RoleController@delete')->name('roles.destroy')->middleware(['auth', 'user.status', 'has.department']);
 Route::get('roles/{role}/edit', 'RoleController@edit')->name('roles.edit')->middleware(['auth', 'user.status', 'has.department']);
 
+// Subdepartments Routes
+Route::get('subdepartments', 'SubdepartmentController@index')->name('subdepartments.index')->middleware(['auth', 'user.status']);
+Route::post('subdepartments', 'SubdepartmentController@store')->name('subdepartments.store')->middleware(['auth', 'user.status', 'has.department']);
+Route::get('subdepartments/create', 'SubdepartmentController@create')->name('subdepartments.create')->middleware(['auth', 'user.status', 'has.department']);
+Route::match(['PUT', 'PATCH'], 'subdepartments/{subdepartment}', 'SubdepartmentController@update')->name('subdepartments.update')->middleware(['auth', 'user.status', 'has.department']);
+Route::delete('subdepartments/{subdepartment}', 'SubdepartmentController@delete')->name('subdepartments.destroy')->middleware(['auth', 'user.status', 'has.department']);
+Route::get('subdepartments/{subdepartment}/edit', 'SubdepartmentController@edit')->name('subdepartments.edit')->middleware(['auth', 'user.status', 'has.department']);
+
 // User Routes
 Route::get('/users', 'UserController@index')->name('users.index')->middleware(['auth', 'user.status', 'has.department']);
 Route::post('/users', 'UserController@store')->name('users.store')->middleware(['auth', 'user.status', 'has.department']);

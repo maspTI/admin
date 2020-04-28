@@ -47,6 +47,16 @@ Vue.component(
     require("./components/Roles/CreateUpdate.vue").default
 );
 
+// Subdepartments
+Vue.component(
+    "index-subdepartments-component",
+    require("./components/Subdepartments/Index.vue").default
+);
+Vue.component(
+    "create-update-subdepartment-component",
+    require("./components/Subdepartments/CreateUpdate.vue").default
+);
+
 // Users
 Vue.component(
     "index-users-component",
@@ -67,6 +77,7 @@ Vue.component(
     "submit-button",
     require("./components/Utilities/SubmitButton.vue").default
 );
+Vue.component("multiselect", require("vue-multiselect").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -75,5 +86,5 @@ Vue.component(
  */
 
 const app = new Vue({
-    el: "#app"
+    el: "#app",
 });

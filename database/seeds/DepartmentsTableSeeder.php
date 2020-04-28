@@ -78,20 +78,6 @@ class DepartmentsTableSeeder extends Seeder
             ],
 
             [
-                'name' => strtolower('Financeiro/Compras'),
-                'status' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-
-            [
-                'name' => strtolower('Financeiro/Contabilidade'),
-                'status' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-
-            [
                 'name' => strtolower('Jurídico'),
                 'status' => Carbon::now(),
                 'created_at' => Carbon::now(),
@@ -114,34 +100,6 @@ class DepartmentsTableSeeder extends Seeder
 
             [
                 'name' => strtolower('Operações'),
-                'status' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-
-            [
-                'name' => strtolower('Operações/Eventos'),
-                'status' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-
-            [
-                'name' => strtolower('Operações/Bilheteria'),
-                'status' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-
-            [
-                'name' => strtolower('Operações/Recepção'),
-                'status' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-
-            [
-                'name' => strtolower('Operações/Segurança'),
                 'status' => Carbon::now(),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()

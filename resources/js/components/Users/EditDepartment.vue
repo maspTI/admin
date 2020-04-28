@@ -6,27 +6,48 @@
         enctype="multipart/form-data"
     >
         <div class="row d-flex justify-content-center">
-            <div class="col-md-6 mb-2">
+            <div class="col-md-8">
                 <div class="form-group bmd-form-group">
                     <label for="department">Departamento</label>
-                    <select
-                        name="department"
-                        id="department"
-                        class="form-control"
+                    <multiselect
+                        :options="departments"
+                        :searchable="true"
+                        :allow-empty="false"
+                        placeholder="Selecione uma opção"
+                        selectLabel="Pressione Enter para selecionar"
+                        deselectLabel="Pressione Enter para remover"
+                        selectedLabel="Selecionado"
+                        track-by="name"
+                        label="name"
                         v-model="form.department"
-                    >
-                        <option value="">SEM DEPARTAMENTO</option>
-                        <option
-                            v-for="department in departments"
-                            :value="department.id"
-                            :key="department.id"
-                            v-text="department.name.toUpperCase()"
-                        ></option>
-                    </select>
+                        @select="select"
+                    />
                     <small
                         class="text-danger"
                         v-text="form.errors.get('department')"
                         v-if="form.errors.has('department')"
+                    ></small>
+                </div>
+            </div>
+            <div class="col-md-8 mb-2" v-if="subdepartments.length">
+                <div class="form-group bmd-form-group">
+                    <label for="subdepartment">Subdepartamento</label>
+                    <multiselect
+                        :options="subdepartments"
+                        :searchable="true"
+                        :allow-empty="false"
+                        placeholder="Selecione uma opção"
+                        selectLabel="Pressione Enter para selecionar"
+                        deselectLabel="Pressione Enter para remover"
+                        selectedLabel="Selecionado"
+                        track-by="name"
+                        label="name"
+                        v-model="form.subdepartment"
+                    />
+                    <small
+                        class="text-danger"
+                        v-text="form.errors.get('subdepartment')"
+                        v-if="form.errors.has('subdepartment')"
                     ></small>
                 </div>
             </div>
@@ -36,30 +57,35 @@
 </template>
 <script>
 import Form from "../../form-validation/Form";
-import SubmitButton from "../Utilities/SubmitButton";
 export default {
     props: ["auth_user"],
     data() {
         return {
             form: new Form({
                 department: "",
-                set_department: true
+                subdepartment: "",
+                set_department: true,
             }),
-            departments: []
+            departments: [],
+            subdepartments: [],
         };
     },
-    components: {
-        SubmitButton
-    },
     methods: {
-        fetch() {
-            this.departments = [];
+        fetch(entity, department = null) {
+            this[entity] = [];
+            this.form.subdepartment = "";
             axios
-                .get("/departments")
-                .then(result => {
-                    this.departments = result.data;
+                .get(
+                    `/${entity}${
+                        entity === "subdepartments"
+                            ? "?department=" + department.id
+                            : ""
+                    }`
+                )
+                .then((result) => {
+                    this[entity] = result.data;
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     window.flash(
                         "Algo deu errado. Tente recarregar a página.",
                         "danger"
@@ -71,20 +97,23 @@ export default {
             window.events.$emit("loading", true);
             this.form
                 .patch(`/users/${this.auth_user.id}`)
-                .then(result => {
+                .then((result) => {
                     window.flash("Obrigado!");
-                    window.location = "/";
+                    // window.location = "/";
                     window.events.$emit("loading", false);
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     window.flash("Algo deu errado.", "danger");
                     console.error(errors.response.message);
                     window.events.$emit("loading", false);
                 });
-        }
+        },
+        select(selected) {
+            this.fetch("subdepartments", selected);
+        },
     },
     created() {
-        this.fetch();
-    }
+        this.fetch("departments");
+    },
 };
 </script>

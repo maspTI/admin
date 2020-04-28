@@ -5,46 +5,45 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Subdepartment extends Model
 {
-    protected $fillable = ['name', 'email', 'status'];
+    protected $fillable = ['department_id','name','status'];
 
+    /**
+     *
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class)->with(['subdepartments']);
+    }
+
+    /**
+     *
+     */
     public function users()
     {
         return $this->hasMany(User::class);
     }
 
-    /**
-     * @Route("/")
-     */
-    public function subdepartments()
-    {
-        return $this->hasMany(Subdepartment::class);
-    }
-
-    public function changeStatus()
-    {
-        return $this->update([
-            'status' => $this->status == null ? Carbon::now() : null
-        ]);
-    }
-
     public function search(array $request = null)
     {
-        if ($request) {
+        if (count($request) > 1) {
             return $this->where('name', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%')
                 ->where(function ($query) use ($request) {
                     if ($request['status'] == 1) {
-                        return $query->where('status', '<=', Carbon::now());
+                        return $query->whereNotNull('status');
                     } elseif ($request['status'] == 2) {
                         return $query->where('status', null);
                     }
                     return;
                 })
+                ->with(['department'])
                 ->orderBy('name')
                 ->paginate($request['paginate'] == 'all' ? $this->count('id') : $request['paginate']);
         }
-        return $this->where('status', '<=', Carbon::now())
+        return $this->whereNotNull('status')
+            ->where('department_id', $request['department'])
+            ->with(['department'])
             ->orderBy('name')
             ->get();
     }
