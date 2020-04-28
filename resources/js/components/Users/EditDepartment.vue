@@ -99,7 +99,7 @@ export default {
                 .patch(`/users/${this.auth_user.id}`)
                 .then((result) => {
                     window.flash("Obrigado!");
-                    // window.location = "/";
+                    window.location = "/";
                     window.events.$emit("loading", false);
                 })
                 .catch((errors) => {

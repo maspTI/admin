@@ -54,7 +54,6 @@ class UserController extends Controller
         }
 
         if (request()->has('set_department')) {
-            dd(request()->all());
             request()->validate([
                 'department' => 'required',
                 'subdepartment' => 'nullable'
@@ -62,7 +61,7 @@ class UserController extends Controller
 
             $user->update([
                 'department_id' => request('department')['id'],
-                'subdepartment_id' => request('subdepartment') ? request('subdepartment')['id'] : null
+                'subdepartment_id' => request('subdepartment') != null ? request('subdepartment')['id'] : request('subdepartment')
             ]);
             return $user->fresh();
         }
