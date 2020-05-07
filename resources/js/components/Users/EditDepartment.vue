@@ -159,8 +159,17 @@ export default {
                 .patch(`/users/${this.auth_user.id}`)
                 .then((result) => {
                     window.flash("Obrigado!");
-                    window.location = "/";
                     window.events.$emit("loading", false);
+
+                    const urlParams = new URLSearchParams(
+                        window.location.search
+                    );
+
+                    if (urlParams.has("url")) {
+                        window.location = urlParams.get("url");
+                        return;
+                    }
+                    window.location = "/";
                 })
                 .catch((errors) => {
                     window.flash("Algo deu errado.", "danger");
