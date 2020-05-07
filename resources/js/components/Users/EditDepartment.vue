@@ -51,6 +51,56 @@
                     ></small>
                 </div>
             </div>
+            <div class="col-md-8 mb-2">
+                <div class="form-group bmd-form-group">
+                    <label class="bmd-label-floating" for="role">Função</label>
+                    <input
+                        class="form-control"
+                        name="role"
+                        id="role"
+                        v-model="form.role"
+                    />
+                    <small
+                        class="text-danger"
+                        v-text="form.errors.get('role')"
+                        v-if="form.errors.has('role')"
+                    ></small>
+                </div>
+            </div>
+            <div class="col-md-8 mb-2">
+                <div class="form-group bmd-form-group">
+                    <label class="bmd-label-floating" for="cpf">CPF</label>
+                    <input
+                        class="form-control"
+                        name="cpf"
+                        id="cpf"
+                        v-model="form.cpf"
+                    />
+                    <small
+                        class="text-danger"
+                        v-text="form.errors.get('cpf')"
+                        v-if="form.errors.has('cpf')"
+                    ></small>
+                </div>
+            </div>
+            <div class="col-md-8 mb-2">
+                <div class="form-group bmd-form-group">
+                    <label class="bmd-label-floating" for="registration_code"
+                        >Matrícula</label
+                    >
+                    <input
+                        class="form-control"
+                        name="registration_code"
+                        id="registration_code"
+                        v-model="form.registration_code"
+                    />
+                    <small
+                        class="text-danger"
+                        v-text="form.errors.get('registration_code')"
+                        v-if="form.errors.has('registration_code')"
+                    ></small>
+                </div>
+            </div>
             <submit-button align="justify-content-center" />
         </div>
     </form>
@@ -64,6 +114,9 @@ export default {
             form: new Form({
                 department: "",
                 subdepartment: "",
+                role: "",
+                cpf: "",
+                registration_code: "",
                 set_department: true,
             }),
             departments: [],
@@ -104,7 +157,6 @@ export default {
                 })
                 .catch((errors) => {
                     window.flash("Algo deu errado.", "danger");
-                    console.error(errors.response.message);
                     window.events.$emit("loading", false);
                 });
         },
