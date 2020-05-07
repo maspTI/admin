@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\User;
+use App\Rules\CPF;
 use Carbon\Carbon;
+use App\Department;
+use App\Rules\CNPJ;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Mail\VerifyUserDepartment;
@@ -23,7 +27,13 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        $departments = new Department;
+        $roles = new Role;
+        return view('users.create')
+            ->with([
+                'departments' => $departments->search(),
+                'roles' => $roles->search()
+            ]);
     }
 
     public function store(Request $request)
@@ -35,6 +45,10 @@ class UserController extends Controller
             'email' => request('email'),
             'username' => request('email') != null ? explode('@', request('email'))[0] : null,
             'department_id' => request('department')['id'],
+            'subdepartment_id' => request('subdepartment') != null ? request('subdepartment')['id'] : request('subdepartment'),
+            'cpf_cnpj' => request('cpf_cnpj'),
+            'registration_code' => request('registration_code'),
+            'role' => request('role'),
             'status' => Carbon::now()
         ]);
 
@@ -57,7 +71,7 @@ class UserController extends Controller
             request()->validate([
                 'department' => 'required',
                 'subdepartment' => 'nullable',
-                'cpf' => ['required',],
+                'cpf_cnpj' => ['required', strlen(request('cpf_cnpj')) == 11 ? new CPF : new CNPJ],
                 'registration_code' => 'nullable',
                 'role' => 'required'
             ]);
@@ -65,7 +79,7 @@ class UserController extends Controller
             $user->update([
                 'department_id' => request('department')['id'],
                 'subdepartment_id' => request('subdepartment') != null ? request('subdepartment')['id'] : request('subdepartment'),
-                'cpf' => request('cpf'),
+                'cpf_cnpj' => request('cpf_cnpj'),
                 'registration_code' => request('registration_code'),
                 'role' => request('role')
             ]);
@@ -79,6 +93,10 @@ class UserController extends Controller
             'email' => request('email'),
             'username' => request('email') != null ? explode('@', request('email'))[0] : null,
             'department_id' => request('department')['id'],
+            'subdepartment_id' => request('subdepartment') != null ? request('subdepartment')['id'] : request('subdepartment'),
+            'cpf_cnpj' => request('cpf_cnpj'),
+            'registration_code' => request('registration_code'),
+            'role' => request('role'),
         ]);
 
         $user->roles()->detach($user->roles->pluck('id')->all());
@@ -87,8 +105,13 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        $departments = new Department;
+        $roles = new Role;
         return view('users.edit')->with([
-            'user' => User::whereId($user->id)->with(['department', 'roles'])->first()
+            'user' => User::whereId($user->id)->with(['department', 'subdepartment', 'roles'])->first(),
+            'departments' => $departments->search(),
+            'subdepartments' => $user->department->subdepartments,
+            'roles' => $roles->search()
         ]);
     }
 
@@ -103,7 +126,11 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'email|nullable',
             'departament' => 'nullable',
-            'roles' => 'nullable'
+            'roles' => 'nullable',
+            'subdepartment' => 'nullable',
+            'cpf_cnpj' => ['required', strlen(request('cpf_cnpj')) == 11 ? new CPF : new CNPJ],
+            'registration_code' => 'nullable',
+            'role' => 'required'
         ]);
     }
 }

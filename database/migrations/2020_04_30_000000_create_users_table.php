@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->nullable();
             $table->string('username')->nullable();
             $table->string('role')->nullable();
-            $table->string('cpf')->nullable();
+            $table->string('cpf_cnpj')->nullable();
             $table->string('registration_code')->nullable();
             $table->timestamp('status')->nullable();
             $table->rememberToken();

@@ -69,17 +69,20 @@
             </div>
             <div class="col-md-8 mb-2">
                 <div class="form-group bmd-form-group">
-                    <label class="bmd-label-floating" for="cpf">CPF</label>
-                    <input
+                    <label class="bmd-label-floating" for="cpf_cnpj"
+                        >CPF/CNPJ</label
+                    >
+                    <the-mask
                         class="form-control"
-                        name="cpf"
-                        id="cpf"
-                        v-model="form.cpf"
+                        name="cpf_cnpj"
+                        id="cpf_cnpj"
+                        :mask="['###.###.###-##', '##.###.###/####-##']"
+                        v-model="form.cpf_cnpj"
                     />
                     <small
                         class="text-danger"
-                        v-text="form.errors.get('cpf')"
-                        v-if="form.errors.has('cpf')"
+                        v-text="form.errors.get('cpf_cnpj')"
+                        v-if="form.errors.has('cpf_cnpj')"
                     ></small>
                 </div>
             </div>
@@ -107,6 +110,7 @@
 </template>
 <script>
 import Form from "../../form-validation/Form";
+import { TheMask } from "vue-the-mask";
 export default {
     props: ["auth_user"],
     data() {
@@ -115,13 +119,16 @@ export default {
                 department: "",
                 subdepartment: "",
                 role: "",
-                cpf: "",
+                cpf_cnpj: "",
                 registration_code: "",
                 set_department: true,
             }),
             departments: [],
             subdepartments: [],
         };
+    },
+    components: {
+        TheMask,
     },
     methods: {
         fetch(entity, department = null) {

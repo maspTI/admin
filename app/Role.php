@@ -21,9 +21,9 @@ class Role extends Model
         ]);
     }
 
-    public function search(array $request)
+    public function search(array $request = null)
     {
-        if (count($request)) {
+        if ($request) {
             return $this->where('name', 'LIKE', $request['search'] ? "%{$request['search']}%" : '%%')
                 ->where(function ($query) use ($request) {
                     if ($request['status'] == 1) {

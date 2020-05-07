@@ -11,6 +11,8 @@
         <div class="row">
             <div class="col-md-12">
                 <create-update-users-component
+                    :departments="{{ $departments }}"
+                    :roles="{{ $roles }}"
                     url="/users"
                     http_verb="post"
                     message="Usuario criado com sucesso!"

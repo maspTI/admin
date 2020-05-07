@@ -60,6 +60,59 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group bmd-form-group">
+                    <label class="bmd-label-floating" for="role">Função</label>
+                    <input
+                        class="form-control"
+                        name="role"
+                        id="role"
+                        v-model="form.role"
+                    />
+                    <small
+                        class="text-danger"
+                        v-text="form.errors.get('role')"
+                        v-if="form.errors.has('role')"
+                    ></small>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group bmd-form-group">
+                    <label class="bmd-label-floating" for="cpf_cnpj"
+                        >CPF/CNPJ</label
+                    >
+                    <the-mask
+                        class="form-control"
+                        name="cpf_cnpj"
+                        id="cpf_cnpj"
+                        :mask="['###.###.###-##', '##.###.###/####-##']"
+                        v-model="form.cpf_cnpj"
+                    />
+                    <small
+                        class="text-danger"
+                        v-text="form.errors.get('cpf_cnpj')"
+                        v-if="form.errors.has('cpf_cnpj')"
+                    ></small>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group bmd-form-group">
+                    <label class="bmd-label-floating" for="registration_code"
+                        >Matrícula</label
+                    >
+                    <input
+                        class="form-control"
+                        name="registration_code"
+                        id="registration_code"
+                        v-model="form.registration_code"
+                    />
+                    <small
+                        class="text-danger"
+                        v-text="form.errors.get('registration_code')"
+                        v-if="form.errors.has('registration_code')"
+                    ></small>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group bmd-form-group">
                     <label for="department">Departamento</label>
                     <multiselect
                         v-model="form.department"
@@ -75,6 +128,7 @@
                         selectLabel="Pressione ENTER para selecionar"
                         deselectLabel="Pressione ENTER para remover"
                         selectedLabel="Selecionado"
+                        @select="select"
                     />
                     <small
                         class="text-danger"
@@ -83,9 +137,31 @@
                     ></small>
                 </div>
             </div>
+            <div class="col-md-6" v-if="subdepartments.length">
+                <div class="form-group bmd-form-group">
+                    <label for="subdepartment">Subdepartamento</label>
+                    <multiselect
+                        :options="subdepartments"
+                        :searchable="true"
+                        :allow-empty="false"
+                        placeholder="Selecione uma opção"
+                        selectLabel="Pressione Enter para selecionar"
+                        deselectLabel="Pressione Enter para remover"
+                        selectedLabel="Selecionado"
+                        track-by="name"
+                        label="name"
+                        v-model="form.subdepartment"
+                    />
+                    <small
+                        class="text-danger"
+                        v-text="form.errors.get('subdepartment')"
+                        v-if="form.errors.has('subdepartment')"
+                    ></small>
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="form-group bmd-form-group">
-                    <label for="role">Funcoes</label>
+                    <label for="role">Níveis de Acesso</label>
                     <multiselect
                         v-model="form.roles"
                         :options="roles"
@@ -115,23 +191,36 @@
 <script>
 import Form from "../../form-validation/Form";
 import Multiselect from "vue-multiselect";
+import { TheMask } from "vue-the-mask";
 import SubmitButton from "../Utilities/SubmitButton";
 export default {
-    props: ["user", "http_verb", "url", "message"],
+    props: [
+        "user",
+        "http_verb",
+        "url",
+        "message",
+        "departments",
+        "roles",
+        "subdepartments_db",
+    ],
     data() {
         return {
             form: new Form({
                 name: "",
                 email: "",
                 department: "",
+                subdepartment: "",
+                role: "",
+                cpf_cnpj: "",
+                registration_code: "",
                 roles: [],
             }),
-            departments: [],
-            roles: [],
+            subdepartments: [],
             many: false,
         };
     },
     components: {
+        TheMask,
         Multiselect,
         SubmitButton,
     },
@@ -153,12 +242,19 @@ export default {
                     console.error(errors);
                 });
         },
-        fetch(data) {
-            this[data] = [];
+        fetch(entity, department = null) {
+            this[entity] = [];
+
             axios
-                .get(`/${data}`)
+                .get(
+                    `/${entity}${
+                        entity === "subdepartments"
+                            ? "?department=" + department.id
+                            : ""
+                    }`
+                )
                 .then((result) => {
-                    this[data] = result.data;
+                    this[entity] = result.data;
                 })
                 .catch((errors) => {
                     window.flash(
@@ -171,11 +267,13 @@ export default {
         customLabel(data) {
             return `${data.name.toUpperCase()}`;
         },
+        select(selected) {
+            this.fetch("subdepartments", selected);
+        },
     },
     created() {
-        this.fetch("departments");
-        this.fetch("roles");
         if (this.user != undefined) {
+            this.subdepartments = this.subdepartments_db;
             this.form = new Form({ ...this.user });
         }
     },
