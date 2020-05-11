@@ -88,6 +88,22 @@ class SubdepartmentsTableSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
 
+            [
+                'department_id' => Department::where('name', 'diretoria')->first()->id,
+                'name' => strtolower('diretoria artística'),
+                'status' => Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+
+            [
+                'department_id' => Department::where('name', 'diretoria')->first()->id,
+                'name' => strtolower('diretoria opeações e finanças'),
+                'status' => Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+
         ]);
     }
 }

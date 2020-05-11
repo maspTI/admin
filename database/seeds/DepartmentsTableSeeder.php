@@ -15,14 +15,7 @@ class DepartmentsTableSeeder extends Seeder
     {
         Department::insert([
             [
-                'name' => strtolower('Diretoria Artística'),
-                'status' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-
-            [
-                'name' => strtolower('Diretoria Operações e Finanças'),
+                'name' => strtolower('Diretoria'),
                 'status' => Carbon::now(),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
