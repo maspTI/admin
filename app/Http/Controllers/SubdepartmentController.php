@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Department;
 use App\Subdepartment;
 use Illuminate\Http\Request;
+use App\Jobs\ChangeUserDepartment;
 
 class SubdepartmentController extends Controller
 {
@@ -95,11 +96,17 @@ class SubdepartmentController extends Controller
 
         $this->validateRequest($request);
 
+        $departmentId = $subdepartment->department_id;
+
         $subdepartment->update([
             'department_id' => request('department')['id'],
             'name' => request('name'),
             'email' => request('email')
         ]);
+
+        if ($departmentId != request('department')['id']) {
+            ChangeUserDepartment::dispatch($subdepartment->fresh());
+        }
     }
 
     /**

@@ -25,6 +25,13 @@ class Subdepartment extends Model
         return $this->hasMany(User::class);
     }
 
+    public function changeStatus()
+    {
+        return $this->update([
+            'status' => $this->status == null ? Carbon::now() : null
+        ]);
+    }
+
     public function search(array $request = null)
     {
         if (count($request) > 1) {
