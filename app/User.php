@@ -36,6 +36,17 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    /**
+     *
+     */
+    public function manager($departmentId)
+    {
+        return $this->where('department_id', $departmentId)
+            ->whereHas('roles', function ($query) {
+                $query->whereId(2);
+            })->first();
+    }
+
     public function changeStatus()
     {
         return $this->update([
