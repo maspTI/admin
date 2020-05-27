@@ -9,6 +9,6 @@
                 </li>
             </ul>
         </nav>
-        <div class="copyright float-right">Ambiente: {{ strtoupper(env('APP_ENV')) }}</div>
+        <div class="copyright float-right">Ambiente: {{ strtoupper(config('app.env')) }}</div>
     </div>
 </footer>
