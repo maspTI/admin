@@ -19,20 +19,8 @@ class HasDepartment
         if (auth()->user()->department == null) {
             return redirect('http://admin.masp.net.br/users/departments?url=' . config('app.url'));
         }
-        // Director
-        if (auth()->user()->department_id == 1 && count(auth()->user()->roles->all())) {
-            if (array_intersect(auth()->user()->roles->pluck()->all(), [1])) {
-                return $next($request);
-            }
-        }
-        // Manager
-        if (auth()->user()->department_id == 7 && count(auth()->user()->roles->all())) {
-            if (array_intersect(auth()->user()->roles->pluck()->all(), [2])) {
-                return $next($request);
-            }
-        }
-        // Regular
-        if (auth()->user()->department_id == 7) {
+
+        if (in_array(auth()->user()->department->id, [1,7,17])) {
             return $next($request);
         }
 

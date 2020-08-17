@@ -37,6 +37,50 @@ class User extends Authenticatable
     }
 
     /**
+     * @return boolean
+     */
+    public function isCEO()
+    {
+        return in_array([1], $this->roles->pluck('id')->all());
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isManager()
+    {
+        return in_array([2], $this->roles->pluck('id')->all());
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSupport()
+    {
+        return in_array([3], $this->roles->pluck('id')->all());
+    }
+
+    /**
+     * @return string
+     */
+    public function role()
+    {
+        if ($this->isCEO()) {
+            return 'ceo';
+        }
+
+        if ($this->isManager()) {
+            return 'manager';
+        }
+
+        if ($this->isSuport()) {
+            return 'support';
+        }
+
+        return 'regular';
+    }
+
+    /**
      *
      */
     public function manager($departmentId)
